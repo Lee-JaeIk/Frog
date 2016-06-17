@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="/homePage">홈 화면</a>
+    <a href="/activityPage">대외활동</a>
+    <a href="/myPage">마이페이지</a>
+    
+    <h1>Activity</h1>
+    <table border="1" width="700">
+    	<tr>
+	    	<th width="100">Seq</th>
+	    	<th width="300">대외활동 명</th>
+	    	<th width="300">이미지</th>
+    	</tr>
+
+    	<% for ( var i=0 ; i < activity.length ; i++ ) { %>
+    	<tr>
+    		<td><%=activity[i].seq%></td>
+    		<td><a href="/detailGuide/<%=activity[i].seq%>"><%=activity[i].name%></a></td>
+    		<td><%=activity[i].recruitImg%></td>
+    	</tr>	
+    	<% } %>
+    </table>
+
+    <h1>Best Postscript</h1>
+    <table border="1" width="1400">
+    	<tr>
+    		<th width="200">CompanyLogo</th>
+    		<th width="200">Name</th>
+    		<th width="50">Rate</th>
+    		<th width="50">ActClass</th>
+    		<th width="100">CompanyName</th>
+    		<th width="200">Comment</th>
+    		<th width="300">CommentGood</th>
+    		<th width="300">CommentBad</th>
+    	</tr>
+
+    	<tr>
+    		<td><%=postscript.companyLogo%></td>
+    		<td><a href="/detailPostscript/<%=postscript.seq%>"><%=postscript.activityName%></a></td>
+    		<td><%=postscript.rate%></td>
+    		<td><%=postscript.actClass%></td>
+    		<td><%=postscript.companyName%></td>
+    		<td><%=postscript.comment%></td>
+    		<td><%=postscript.commentGood%></td>
+    		<td><%=postscript.commentBad%></td>
+    	</tr>
+    </table>
+
+    <h1>Best Interview</h1>
+    <table border="1" width="1200">
+    	<tr>
+    		<th width="200">companyLogo</th>
+    		<th width="200">name</th>
+    		<th width="50">level</th>
+    		<th width="50">actClass</th>
+    		<th width="100">companyName</th>
+    		<th width="300">qeustion</th>
+    		<th width="300">answer</th>    		
+    	</tr>
+    	<tr>
+    		<td><%=interview.companyLogo%></td>
+    		<td><a href="/detailActivity/interview/<%=interview.seq%>"><%=interview.activityName%></a></td>
+    		<td><%=interview.level%></td>
+    		<td><%=interview.actClass%></td>
+    		<td><%=interview.companyName%></td>
+    		<td><%=interview.question%></td>
+    		<td><%=interview.answer%></td>
+    	</tr>
+    </table>
+  </body>
+</html>

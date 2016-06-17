@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+        function goBack(){
+            window.history.back();
+        }
+    </script>
+    
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <button onclick="goBack()">◀◀</button>
+    <a href="/detailGuide/<%=seq%>">모집요강</a>
+    <a href="/interviewList/<%=seq%>">면접후기</a>
+    <a href="/postscriptList/<%=seq%>">활동후기</a>
+    <a href="/myrecommandList">추천</a>
+    
+    <h1>Like Activity</h1>
+    <table border="1" width="200">
+    	<tr>
+	    	<th>check</th>
+    	</tr>
+    	<tr>
+    		<td><%=check%></td>
+    	</tr>	
+    </table>
+
+    <h1>Activity</h1>
+    <table border="1" width="1150">
+        <tr>
+            <th width="50">seq</th>
+            <th width="300">companyLogo</th>
+            <th width="200">name</th>
+            <th width="100">actClass</th>
+            <th width="200">companyName</th>
+            <th width="300">guideImg</th>
+        </tr>
+
+        <tr>
+            <td><%=seq%></td>
+            <td><%=companyLogo%></td>
+            <td><%=name%></td>
+            <td><%=actClass%></td>
+            <td><%=companyName%></td>
+            <td><%=guideImg%></td>
+        </tr>
+    </table>
+  </body>
+</html>

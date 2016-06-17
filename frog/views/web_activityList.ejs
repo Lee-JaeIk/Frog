@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Activity List</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Activity List</h1>
+    <a href="/web/logout"><button>로그아웃</button></a>
+    <a href="/web/writeActivity"><button>대외활동 작성</button></a>
+    <form enctype="multipart/form-data" action="/insertActivity" method="post" >
+        <table width="1400" border="1">
+        	
+        <tr>
+            <th width="100" >Seq</th>
+            <th width="200" >대외활동 명(T아카데미)</th>
+            <th width="200" >회사명((주)삼성전자)</th>
+            <th width="200">모집 시작날짜(2016-06-11)</th>
+            <th width="200">모집 마감날짜(2016-06-18)</th>            
+            <th width="50">평점</th>            
+            <th width="50">레벨</th>            
+        </tr>    
+
+        <%if(result.activity != null ){ %>
+        <%for( var i=0 ; i<result.activity.length ; i++) {%>
+        <tr>
+            <td align="center"><%=result.activity[i].seq%></td>
+            <td align="center"><a href="/web/detailActivity/<%=result.activity[i].seq%>"> <%=result.activity[i].name%> </a></td>
+            <td align="center"><%=result.activity[i].companyName%></td>
+            <td align="center"><%=result.activity[i].startDate%></td>
+            <td align="center"><%=result.activity[i].endDate%></td>
+            <td align="center"><%=result.activity[i].averageRate%></td>
+            <td align="center"><%=result.activity[i].totalInterLevel%></td>
+        </tr>        
+        <% }} %>
+        </table>
+    </form>
+  </body>
+</html>

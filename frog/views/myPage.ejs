@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="/homePage">홈 화면</a>
+    <a href="/activityPage">대외활동</a>
+    <a href="/myPage">마이페이지</a>
+
+    <h1>Point</h1>
+    <table border="1" width="200">
+        <tr>
+            <th width="200">point</th>
+        </tr>
+        <tr>
+            <td><%=point%></td>
+        </tr>   
+    </table>    
+    
+    <h1>Like Activity</h1>
+    <table border="1" width="1100">
+        <tr>
+            <th width="200">recruitImg</th>
+            <th width="200">name</th>
+            <th width="100">companyName</th>
+            <th width="50">actClass</th>
+            <th width="500">endDate</th>
+            <th width="50">averageRate</th>
+        </tr>
+
+        <tr>
+            <td><%=activity.recruitImg%></td>
+            <td><a href=""><%=activity.name%></a></td>
+            <td><%=activity.companyName%></td>
+            <td><%=activity.actClass%></td>
+            <td><%=activity.endDate%></td>
+            <td><%=activity.averageRate%></td>
+        </tr>   
+    </table>    
+
+    <a href="/myInterview">활동내역</a>
+  </body>
+</html>

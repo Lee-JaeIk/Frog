@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>대외활동 수정</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>대외활동 수정</h1>
+    <a href="/web/activityList"><button>리스트</button></a>
+    <form action="/web/updateActivity" method="post" >
+        <table width="1000" border="1">
+        	<tr>
+        		<th width="500">대외활동 명(T아카데미)</th>
+        		<td width="500"><input type="hidden" name="seq" value="<%=activity.seq%>"><input type="text" name="name" size="75" maxlength="75"  value="<%=activity.name%>"></td>
+        	</tr>    
+            <tr>
+                <th>마감날짜(2016-06-06)</th>
+                <td><input type="text" name="origin_endDate" size="75" maxlength="75" value="<%=activity.endDate%>"></td>
+            </tr> 
+            <tr>
+                <th>시작날짜(2016-06-06)</th>
+                <td><input type="text" name="origin_startDate" size="75" maxlength="75" value="<%=activity.startDate%>"></td>
+            </tr> 	
+        	<tr>
+        		<th>활동분야(멘토링)</th>
+                <td><input type="text" name="actClass" size="75" maxlength="75" value="<%=activity.actClass%>"></td>
+        	</tr>
+        	<tr>
+        		<th>산업(건설)</th>
+                <td><input type="text" name="indus" size="75" maxlength="75" value="<%=activity.indus%>"></td>
+        	</tr>
+            <tr>
+                <th>활동기간(180)</th>
+                <td><input type="text" name="during" size="75" maxlength="75" value="<%=activity.during%>"></td>
+            </tr>
+            <tr>
+                <th>활동시기(2015 상반기, 2015 하반기 등)</th>
+                <td><input type="text" name="term" size="75" maxlength="75" value="<%=activity.term%>"></td>
+            </tr>
+            <tr>
+                <th>활동지역(서울)</th>
+                <td><input type="text" name="region" size="75" maxlength="75" value="<%=activity.region%>"></td>
+            </tr>
+            <tr>
+                <th>회사명((주)삼성전자)</th>
+                <td><input type="text" name="companyName" size="75" maxlength="75" value="<%=activity.companyName%>"></td>
+            </tr>
+        	<tr align="center">
+        		<td colspan="2">
+        			<input type="submit" value="저장">
+        			<input type="reset" value="취소">
+        		</td>
+        	</tr>
+        </table>
+    </form>
+  </body>
+</html>

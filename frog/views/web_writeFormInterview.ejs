@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>면접후기 작성</title>
+    <script> function back() { window.history.back(); } </script>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>면접후기 작성</h1>
+    <a href="/"><button>홈</button></a>
+    <a href="/"><button onclick="back()">뒤로</button></a>
+
+     <form action="/web/writeInterview" method="post">
+        <table width="1300" border="1">
+            <tr>
+                <th width="100">activitySeq</th>
+                <th width="200">대외활동 명</th>
+                <th width="200">활동</th>
+                <th width="200">회사이름</th>
+                <th width="600">회사로고</th>
+            </tr>
+            <tr>
+                <td><input type="hidden" name="activitySeq" value="<%=activity.seq%>"><%=activity.seq%></td>
+                <td><input type="hidden" name="activityName" value="<%=activity.name%>"><%=activity.name%></td>
+                <td><input type="hidden" name="actClass" value="<%=activity.actClass%>"><%=activity.actClass%></td>
+                <td><input type="hidden" name="companyName" value="<%=activity.companyName%>"><%=activity.companyName%></td>
+                <td><input type="hidden" name="companyLogo" value="<%=activity.companyLogo%>"><%=activity.companyLogo%></td>
+            </tr>
+        </table>
+
+        <table width="1300" border="1">
+            <tr>
+                <th width="300">활동시기(2015 상반기)</th>
+                <td width="1000"><input type="text" name="term" size="160" maxlength="160"></td>
+            </tr>
+            <tr>
+                <th>면접 난이도(1~5)</th>
+                <td><input type="number" name="level" size="160" maxlength="160"></td>
+            </tr>
+            <tr>
+                <th>면접 결과(0:합격 / 1:불합격)</th>
+                <td><input type="text" name="result" size="160" maxlength="160"></td>
+            </tr>
+            <tr>
+                <th>면접 질문</th>
+                <td><input type="text" name="question" size="160" maxlength="160"></td>
+            </tr>
+            <tr>
+                <th>면접 답변</th>
+                <td><input type="text" name="answer" size="160" maxlength="160"></td>
+            </tr>
+            <tr>
+                <th>면접 방식</th>
+                <td><input type="text" name="way" size="160" maxlength="160"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="저장">
+                    <input type="reset" value="취소">
+                </td>
+            </tr>
+        </table>
+    </form>
+  </body>
+</html>

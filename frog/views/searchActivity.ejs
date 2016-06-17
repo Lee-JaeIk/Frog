@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="/homePage">홈 화면</a>
+    <a href="/activityPage">대외활동</a>
+    <a href="/myPage">마이페이지</a>
+
+    <h1>Activity</h1>
+    <table border="1" width="1100">
+        <tr>
+            <th width="200">recruitImg</th>
+            <th width="200">name</th>
+            <th width="100">companyName</th>
+            <th width="50">actClass</th>
+            <th width="500">endDate</th>
+            <th width="50">averageRate</th>
+        </tr>
+
+        <% for ( var i=0 ; i < activity.length ; i++ ) { %>
+        <tr>
+            <td><%=activity[i].recruitImg%></td>
+            <td><a href=""><%=activity[i].name%></a></td>
+            <td><%=activity[i].companyName%></td>
+            <td><%=activity[i].actClass%></td>
+            <td><%=activity[i].endDate%></td>
+            <td><%=activity[i].averageRate%></td>
+        </tr>   
+        <% } %>
+    </table>    
+    
+  </body>
+</html>

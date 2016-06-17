@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="/">홈</a>
+    <a href="/myInterview">면접 후기</a>
+    <a href="/myPostscript">활동 후기</a>
+    
+    <h3>작성 갯수</h3>
+
+    <h3>면접 후기</h3>
+    <table border="1" width="1300">
+        <tr>
+            <th width="300">writeDate</th>
+            <th width="300">companyLogo</th>
+            <th width="150">companyName</th>
+            <th width="150">term</th>
+            <th width="50">level</th>
+            <th width="50">result</th>
+            <th width="300">question</th>
+        </tr>
+
+        <% for( var i=0 ; i < interview.length ; i++) { %>
+        <tr>
+            <td><%=activity.writeDate%></td>
+            <td><%=activity.companyLogo%></td>
+            <td><%=activity.companyName%></td>
+            <td><%=activity.term%></td>
+            <td><%=interview.level%></td>
+            <td><%=interview.result%></td>
+            <td><%=interview.question%></td>
+        </tr>
+        <% } %>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+    	function goBack(){
+    		window.history.back();
+    	}
+    </script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+
+	<button onclick="goBack()">◀◀</button>
+	<h3>Comment</h3>
+	<%=postscript.comment%>
+
+	<table border="1" width="700">
+		<tr>
+			<th width="100">rate</th>
+			<th width="100">term</th>
+			<th width="500">writeDate</th>
+		</tr>
+		<tr>
+			<td><%=postscript.rate%></td>
+			<td><%=postscript.term%></td>
+			<td><%=postscript.writeDate%></td>
+		</tr>
+	</table>
+
+	<h3>Good Comment</h3>
+	<%=postscript.commentGood%>
+
+	<h3>Bad Comment</h3>
+	<%=postscript.commentBad%>
+  </body>
+</html>

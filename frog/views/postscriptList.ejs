@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="/detailGuide/<%=activity.seq%>">모집요강</a>
+    <a href="/interviewList/<%=activity.seq%>">면접후기</a>
+    <a href="/postscriptList/<%=activity.seq%>">활동후기</a>
+    <a href="/myrecommandList">추천</a>
+    
+    <h1>Like Activity</h1>
+    <table border="1" width="200">
+    	<tr>
+	    	<th>check</th>
+    	</tr>
+    	<tr>
+    		<td><%=check%></td>
+    	</tr>	
+    </table>
+
+    <h1>Activity</h1>
+    <table border="1" width="1100">
+        <tr>
+            <th width="300">companyLogo</th>
+            <th width="200">name</th>
+            <th width="100">actClass</th>
+            <th width="200">companyName</th>
+            <th width="300">recruitImg</th>
+        </tr>
+        <tr>
+            <td><%=activity.companyLogo%></td>
+            <td><%=activity.name%></td>
+            <td><%=activity.actClass%></td>
+            <td><%=activity.companyName%></td>
+            <td><%=activity.recruitImg%></td>
+        </tr>
+    </table>
+
+    <h1>PostScript List</h1>
+    <h3>총 후기 개수 <%=activity.totalPostCount%></h3>
+    <h3>평균 만족도 <%=activity.averageRate%></h3>
+    <h3>별 갯수 <%=activity.totalPostCountStar%></h3>
+    <table border="1" width="1000">
+        <tr>
+            <th width="100">rate</th>
+            <th width="300">comment</th>
+            <th width="300">commentGood</th>
+            <th width="300">commentBad</th>
+        </tr>
+
+        <% for( var i=0 ; i < postscript.length ; i++ ) { %>
+        <tr>
+            <td><%=postscript[i].rate%></td>
+            <td><a href=""><%=postscript[i].comment%></a></td>
+            <td><%=postscript[i].commentGood%></td>
+            <td><%=postscript[i].commentBad%></td>
+        </tr>
+        <% } %>
+    </table>
+  </body>
+</html>

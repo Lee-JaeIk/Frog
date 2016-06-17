@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <a href="/">Home</a>    
+    <form action="/changePwd" method="post">
+    <table width="1000" border="1">
+        <tr>
+            <th width="500">이메일(session으로 받기)</th>
+            <td width="500"><input tpye="text" name="email" value="jjgorl@hanmail.net"></td>
+        </tr>       
+    	<tr>
+    		<th width="500">현재 비밀번호</th>
+    		<td width="500"><input type="password" name="pwd" size="50" maxlength="50"></td>
+    	</tr>    	
+    	<tr>
+    		<th>새 비밀번호</th>
+            <td><input type="password" name="changePwd" size="50" maxlength="50"></td>
+    	</tr>    	
+        <tr>
+            <th>새 비밀번호 확인</th>
+            <td><input type="password" name="checkPwd" size="50" maxlength="50"></td>
+        </tr>       
+    	<tr>
+    		<td colspan="2">                
+    			<input type="submit" value="저장">
+    			<input type="reset" value="취소">
+    		</td>
+    	</tr>
+    </table>
+    </form>
+  </body>
+</html>

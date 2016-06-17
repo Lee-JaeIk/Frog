@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script> function back() { window.history.back(); } </script>
+    <title>대외활동 상세 페이지</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>대외활동 페이지</h1>        
+
+    <h1>대외활동 정보</h1>
+    <a href="/web/activityList"><button>홈</button></a> 
+    <a href="/web/updateActivity/<%=activity.seq%>"><button>대외활동 수정</button></a>
+    <a href="/"><button onclick="back()">뒤로</button></a>
+    <!-- name / startDate / actClass / indus / term / during / reigon / companyName -->
+    <table border="1" width="1300">
+        <tr>
+            <th width="400">대외활동 명(T아카데미)</th>
+            <th width="400">모집 시작날짜(2016-06-11)</th>
+            <th width="400">모집 마감날짜(2016-06-18)</th>
+            <th width="100">레벨</th>
+        </tr>
+        <tr align="center">
+            <td><%=activity.name%></td>
+            <td><%=activity.startDate%></td>
+            <td><%=activity.endDate%></td>
+            <td><%=activity.totalInterLevel%></td>
+        </tr>
+    </table>
+    <p>
+    <table border="1" width="1300">
+        <tr>
+            <th width="220">활동분야(해외탐방)</th>
+            <th width="220">산업(서비스)</th>
+            <th width="220">활동시기(2015 상반기)</th>
+            <th width="220">활동기간(80)</th>
+            <th width="220">지역(서울)</th>
+            <th width="200">회사이름((주)삼성전자)</th>
+        </tr>
+        <tr align="center">
+            <td><%=activity.actClass%></td>
+            <td><%=activity.indus%></td>
+            <td><%=activity.term%></td>
+            <td><%=activity.during%></td>
+            <td><%=activity.region%></td>
+            <td><%=activity.companyName%></td>
+        </tr>
+    </table>
+    <p>
+    <table border="1" width="1300">
+        <tr>
+            <th width="400">guideImg</th>
+            <td width="900" align="center"><a href="<%=activity.guideImg%>"><%=activity.guideImg%></a></td>
+        </tr>
+        <tr>
+            <th>recruitImg</th>
+            <td align="center"><a href="<%=activity.recruitImg%>"><%=activity.recruitImg%></a></td>
+        </tr>
+        <tr>
+            <th>companyLogo</th>
+            <td align="center"><a href="<%=activity.companyLogo%>"><%=activity.companyLogo%></a></td>
+        </tr>
+    </table>
+
+
+
+
+
+
+    <h1>활동후기</h1>
+    <a href="/web/formPostscript/<%=activity.seq%>"><button>활동후기 작성</button></a>
+    <!-- name / startDate / actClass / indus / term / during / reigon / companyName -->
+    <table border="1" width="1300">
+        <tr>
+            <th width="50">seq</th>
+            <th width="150">writeDate</th>
+            <th width="100">rate</th>
+            <th width="250">comment</th>
+            <th width="350">commentGood</th>
+            <th width="400">commentBad</th>
+        </tr>
+
+        <% for( var i=0 ; i<postscript.length ; i++ ) { %>
+        <tr align="center">
+            <td><a href="/web/detailPostscript/<%=postscript[i].seq%>/<%=activity.seq%>"><%=postscript[i].seq%></a></td>
+            <td><%=postscript[i].writeDate%></td>
+            <td><%=postscript[i].rate%></td>
+            <td><%=postscript[i].comment%></td>
+            <td><%=postscript[i].commentGood%></td>
+            <td><%=postscript[i].commentBad%></td>            
+        </tr>
+        <% } %>
+    </table>
+
+
+
+
+    <h1>면접후기</h1>
+    <a href="/web/formInterview/<%=activity.seq%>"><button>면접후기 작성</button></a>
+    <!-- name / startDate / actClass / indus / term / during / reigon / companyName -->
+    <table border="1" width="1300">
+        <tr>
+            <th width="50">seq</th>
+            <th width="150">writeDate</th>
+            <th width="50">level</th>
+            <th width="50">result</th>
+            <th width="150">way</th>
+            <th width="250">question</th>
+            <th width="600">answer</th>
+        </tr>
+
+        <% for( var i=0 ; i<interview.length ; i++ ) { %>
+        <tr align="center">
+            <td><a href="/web/detailInterview/<%=interview[i].seq%>/<%=activity.seq%>"><%=interview[i].seq%></a></td>
+            <td><%=interview[i].writeDate%></td>
+            <td><%=interview[i].level%></td>
+            <td><%=interview[i].result%></td>
+            <td><%=interview[i].way%></td>
+            <td><%=interview[i].question%></td>
+            <td><%=interview[i].answer%></td>            
+        </tr>
+        <% } %>
+    </table>
+  </body>
+</html>

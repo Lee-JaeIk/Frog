@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script> function back() { window.history.back(); } </script>
+    <title>활동후기 작성</title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>활동후기 작성</h1>
+    <a href="/"><button>홈</button></a>
+    <a href="/"><button onclick="back()">뒤로</button></a>
+    
+    <form action="/web/updatePostscript" method="post">
+        <table width="1300" border="1">
+            <tr>
+                <th width="100">activitySeq</th>
+                <th width="200">대외활동 명(T아카데미)</th>
+                <th width="200">활동(건설)</th>
+                <th width="200">회사명((주)삼성전자)</th>
+                <th width="600">회사로고</th>
+            </tr>
+            <tr align="center">
+                <td><input type="hidden" name="activitySeq" value="<%=activity.seq%>"><%=activity.seq%></td>
+                <td><input type="hidden" name="activityName" value="<%=activity.name%>"><%=activity.name%></td>
+                <td><input type="hidden" name="actClass" value="<%=activity.actClass%>"><%=activity.actClass%></td>
+                <td><input type="hidden" name="companyName" value="<%=activity.companyName%>"><%=activity.companyName%></td>
+                <td><input type="hidden" name="companyLogo" value="<%=activity.companyLogo%>"><%=activity.companyLogo%></td>
+            </tr>
+        </table>
+
+        <table border="1" width="1300">
+            <tr>
+                <th width="300">활동시기</th>
+                <td width="1000"><input type="text" name="term" size="160" maxlength="160" value="<%=postscript.term%>"></td>
+            </tr>
+            <tr>
+                <th>활동 총 평점</th>
+                <td><input type="hidden" name="seq" value="<%=postscript.seq%>"><input type="number" name="rate" value="<%=postscript.rate%>"></td>
+            </tr>
+            <tr>
+                <th>활동 한 줄 평</th>
+                <td><input type="text" name="comment" size="160" maxlength="160" value="<%=postscript.comment%>"></td>
+            </tr>
+            <tr>
+                <th>도움이 된 점</th>
+                <td><input type="text" name="commentGood" size="160" maxlength="160" value="<%=postscript.commentGood%>"></td>
+            </tr>
+            <tr>
+                <th>아쉬웠던 점</th>
+                <td><input type="text" name="commentBad" size="160" maxlength="160" value="<%=postscript.commentBad%>"></td>
+            </tr>
+            <tr align="center">
+                <td colspan="2">
+                    <input type="submit" value="저장">
+                    <input type="reset" value="취소">
+                </td>
+            </tr>
+        </table>
+    </form>
+  </body>
+</html>

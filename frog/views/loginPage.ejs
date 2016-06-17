@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <a href="/">Home</a>
+    <a href="/signUpPage">회원가입</a>
+    <a href="/changePwd">비밀번호 변경></a>
+    <form action="/login" method="post">
+    <table width="1000" border="1">
+    	<tr>
+    		<th width="500">이메일 주소</th>
+    		<td width="500"><input type="text" name="email" size="50" maxlength="50"></td>
+    	</tr>    	
+    	<tr>
+    		<th>비밀번호(8자리 이상)</th>
+            <td><input type="password" name="pwd" size="50" maxlength="50"></td>
+    	</tr>    	
+    	<tr>
+    		<td colspan="2">
+    			<input type="submit" value="저장">
+    			<input type="reset" value="취소">
+    		</td>
+    	</tr>
+    </table>
+    </form>
+  </body>
+</html>

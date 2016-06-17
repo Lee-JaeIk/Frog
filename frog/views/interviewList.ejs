@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="/detailGuide/<%=activity.seq%>">모집요강</a>
+    <a href="/interviewList/<%=activity.seq%>">면접후기</a>
+    <a href="/postscriptList/<%=activity.seq%>">활동후기</a>
+    <a href="/myrecommandList">추천</a>
+    
+    <h1>Like Activity</h1>
+    <table border="1" width="200">
+    	<tr>
+	    	<th>check</th>
+    	</tr>
+    	<tr>
+    		<td><%=check%></td>
+    	</tr>	
+    </table>
+
+    <h1>Activity</h1>
+    <table border="1" width="1100">
+        <tr>
+            <th width="300">companyLogo</th>
+            <th width="200">name</th>
+            <th width="100">actClass</th>
+            <th width="200">companyName</th>
+            <th width="300">recruitImg</th>
+        </tr>
+        <tr>
+            <td><%=activity.companyLogo%></td>
+            <td><%=activity.name%></td>
+            <td><%=activity.actClass%></td>
+            <td><%=activity.companyName%></td>
+            <td><%=activity.recruitImg%></td>
+        </tr>
+    </table>
+
+    <h1>Interview List</h1>
+    <h3>총 후기 개수 <%=activity.totalInterCount%></h3>
+    <h3>면접 난이도 제일 많은 걸로 가져오기</h3>
+    <table border="1" width="1000">
+        <tr>
+            <th width="200">term</th>
+            <th width="100">level</th>
+            <th width="100">result</th>
+            <th width="300">question</th>
+            <th width="300">answer</th>
+        </tr>
+
+        <% for( var i=0 ; i < interview.length ; i++ ) { %>
+        <tr>
+            <td><%=interview[i].term%></td>
+            <td><%=interview[i].level%></td>
+            <td><%=interview[i].result%></td>
+            <td><a href=""><%=interview[i].question%></a></td>
+            <td><%=interview[i].answer%></td>
+        </tr>
+        <% } %>
+    </table>
+  </body>
+</html>
