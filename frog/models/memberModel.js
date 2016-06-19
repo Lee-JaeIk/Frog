@@ -61,22 +61,23 @@ var notFoundMail = { "status": "NotFoundMail" };
 
 
 // ************************* My Page ************************* //
-exports.myPage = function(memSeq, callback){
-	
-	console.log('memberModel myPage memSeq=', memSeq);	
-
+exports.myPage = function(req, callback){
 
 	var activityArr = [];
 	var tmpMember;
-	
+	var loginEmail = req.session.loginEmail;
+	var memSeq;
+
 	async.waterfall([
 		function(callback){
 			MemberModel.findOne( {'seq':memSeq}, function(err, member){					// point를 얻기 위해 MemberModel을 find
-				if(err) console.log('myPage MemberModel err', err);
-				if(!member) console.log('myPage not found member');
-
-				tmpMember = { "point": member.point }
-				callback(null);																// error가 없다면 다음 function으로
+				if(err) console.log('member-myPage MemberModel err', err);
+				if(!member) console.log('member-myPage not found member');
+				else{
+					tmpMember = { "point": member.point }
+					memSeq = member.seq;
+					callback(null);																// error가 없다면 다음 function으로
+				}
 			});
 		},
 	function(callback){
@@ -121,7 +122,7 @@ exports.myPage = function(memSeq, callback){
 
 
 // ************************* Write ************************* //
-exports.postscripts = function(memSeq, callback){
+exports.myPostscripts = function(memSeq, callback){
 
 	PostscriptModel.find( {'writer': memSeq}, function(err, postscript){
 		if(err) console.log('member postscripts err', err);
@@ -139,35 +140,47 @@ exports.postscripts = function(memSeq, callback){
 }	// postscripts
 
 
-exports.interviews = function(memSeq, callback){
-	console.log('interview');
-
-	InterviewModel.find( {writer: memSeq}, function(err, interview){
-		if(err) console.log('member-interviews err', err);
-		if(!interview) console.log('member-interviews not found interview');
+exports.myInterviews = function(req, callback){
+	var loginEmail = req.session.loginEmail;
+	MemberModel.findOne({'loginEmail': loginEmail}, function(err, member){
+		if(err) console.log('member-myInterview err', err);
+		if(!member) console.log('member-myInterview not found member');
 		else{
-			var interviewObj = { "interview": interview }
-			var obj = { 
-				"title": "마이페이지 인터뷰",
-				"totalInterCount": interview.length,
-				"interviews": interviewObj
-			}
-			callback(obj);
-		}
-	});
+			InterviewModel.find( {'writer': member.seq}, function(err, interview){
+				if(err) console.log('member-interviews err', err);
+				if(!interview) console.log('member-interviews not found interview');
+				else{
+					var interviewObj = { "interview": interview }
+					var obj = { 
+						"title": "마이페이지 인터뷰",
+						"totalInterCount": interview.length,
+						"interviews": interviewObj
+					}
+					callback(obj);
+				}
+			});	// Interview
+		}	// if(!member)-else
+	});	// Member
 }
 
 
-exports.moreActivity = function(memSeq, result_callback){
+exports.moreActivity = function(req, result_callback){
 
 	var activityArr = [];
+	var loginEmail = req.session.loginEmail;
 	async.waterfall([
 		function(callback){
-		    LikeActivityModel.find( {$and: [{'member': memSeq}, {'check':1}]}, function(err, likeActivity){
-	      		if(err) console.log('member-moreActivity LikeActivityModel err', err);
-	      		if(!likeActivity) console.log('member-moreActivity not found likeActivity');
-	      		callback(null, likeActivity);
-	    	});
+			MemberModel.findOne({'loginEmail': loginEmail}, function(err, member){
+				if(err) console.log('member-moreActivity MemberModel err', err);
+				if(!member) console.log('member-moreActivity not found member');
+				else{
+				    LikeActivityModel.find( {$and: [{'member': member.seq}, {'check':1}]}, function(err, likeActivity){
+			      		if(err) console.log('member-moreActivity LikeActivityModel err', err);
+			      		if(!likeActivity) console.log('member-moreActivity not found likeActivity');
+			      		callback(null, likeActivity);
+			    	});
+				}
+			});
 	}, 
 	function(likeActivities, callback){
 	  	async.eachSeries(likeActivities, function(item, cb){
@@ -201,7 +214,7 @@ exports.pointCheck = function(req, activitySeq, callback){
 	MemberModel.findOne( { 'loginEmail':loginEmail }, function(err, member){
 		if(err) console.log('member-pointCheck MemberModel err', err);
 		if(!member) console.log('member-pointCheck not found member');
-
+		
 		if(member.point > 1){
 			member.point -= 1;
 			member.save(function(err){

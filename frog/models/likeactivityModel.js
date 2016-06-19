@@ -146,17 +146,6 @@ exports.pushGCM = function(result_callback){
 			  					var tmpMessage = activityName + " 이(가) " + gcmTmpMessage + " 입니다.";
 			  					memberToken = member.gcmToken;
 
-			  					// save notification
-			  					var notification = new NotificationModel({
-			  						memberSeq: member.seq,
-									loginEmail : member.loginEmail,
-									content: tmpMessage
-			  					});
-			  					notification.save(function(err, doc){
-			  						if(err) console.log('pushGCM notification save err', err);
-			  						console.log('notification doc=', doc);
-			  					});
-
 								var message = new gcm.Message({
 									collapseKey: 'Gcm Test',
 									delayWhileIdle: true,
@@ -167,7 +156,20 @@ exports.pushGCM = function(result_callback){
 									}
 								});
 			  					sender.send(message, memberToken, 4, function(err, result) {
-									console.log('gcm message / result = ', message, result);
+			  						if(err) {
+			  							console.log('likeActivity-pushGCM err');
+
+			  						}else{
+										console.log('gcm message / result = ', message, result);
+
+					  					// save notification
+					  					var notification = new NotificationModel({
+					  						memberSeq: member.seq,
+											loginEmail : member.loginEmail,
+											content: tmpMessage
+					  					});
+					  					notification.save(function(err, doc){ if(err) console.log('pushGCM notification save err', err); });
+			  						}
 								});	// sender.send
 			  				}
 			  				cb();
@@ -188,41 +190,22 @@ exports.pushGCM = function(result_callback){
 }	// pushGCM
 
 
-exports.testSchedule = function(callback) {
-	console.log('LikeActivity TestSchedule');
-	callback(statusOk);
-}
-
 
 
 
 // ***************************** Function ***************************** //
-function calDate_dDay(endDate){
-  
-  var today = new Date();
-
-  var tmpEndDate = new Date(endDate);
-  var days = (today - tmpEndDate) / 1000 / 60 / 60 / 24;
-  var result = Math.floor(days);
-  if(result > 0 ) result = "D+"+result;
-  else if(result == 0 ) result = "D-Day";
-  else result = "D"+result;
-  
-  return result;
-}
-
 function getActClass(actClass){
 	var result;
 	switch(actClass){
 		case "전체": 		result=0; break;
-		case "해외탐방": 	result=1; break;
-		case "국내봉사": 	result=2; break;
-		case "해외봉사": 	result=3; break;
+		case "해외탐방": 		result=1; break;
+		case "국내봉사": 		result=2; break;
+		case "해외봉사": 		result=3; break;
 		case "강연": 		result=4; break;
 		case "멘토링": 		result=5; break;
-		case "서포터즈": 	result=6; break;
+		case "서포터즈": 		result=6; break;
 		case "마케터": 		result=7; break;
-		case "홍보대사": 	result=8; break;
+		case "홍보대사": 		result=8; break;
 		case "기자단": 		result=9; break;
 		case "기획단": 		result=10; break;
 		case "기타": 		result=11; break;		

@@ -2,36 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var schedule = require('node-schedule');
-var easyimg = require('easyimage');
-var multer = require('multer');
-var _storage = multer.diskStorage({
-  destination: function (req, file, cb) { // 어느 디렉토리에 저장할 것인가
-    // if( 파일의 형식이 이미지 )
-    cb(null, './public/images/');     // /public/images에 업로드
-    // else if ( 파일의 형식이 텍스트 ) cb(null, './public/texts');
-  },
-  filename: function (req, file, cb) {  // 디렉토리에 저장할 파일의 이름을 어떻게 할것인가
 
-    console.log('1------------------------------------------------1');
-    console.log(file);
-
-    var originalname = file.originalname;
-    var tmp = file.mimetype; // 'image/jpeg', 'image/png', 'image/gif'
-    tmp = tmp.split('/')[1];
-    if(tmp == 'jpeg') { tmp = 'jpg' };
-
-    var ext = "." + tmp;
-    var filename = originalname.substring(0, originalname.lastIndexOf('.'));
-    console.log('filename=', filename);
-
-    console.log('1------------------------------------------------1 filename function last', ext);
-    console.log('1------------------------------------------------1 file.filename + ext', filename+ext);
-
-
-    cb(null, filename + ext);       // 디렉토리에 filenmae+ext로 업로드
-  }
-});
-var upload = multer({ 'storage': _storage });
 
 
 
@@ -247,15 +218,7 @@ router.get('/detailPostscript/:postscriptSeq', function(req, res, next){
 // ************************* My Page ************************* //
 var async = require('async');
 router.get('/myPage', function(req, res, next){  
-  member.getMemberSeq(req, function(memSeq){
-    console.log('/myPage memSeq=', memSeq);
-
-    if(!memSeq) res.json(statusFail);
-    else member.myPage(memSeq, function(datas){ 
-        console.log('datas=', datas);
-    res.json(datas); 
-    }); // myPage
-  }); // getMemberSeq
+  member.myPage(req, function(datas){ res.json(datas); }); // myPage  
 });
 
 
@@ -265,29 +228,19 @@ router.get('/myPage/postscripts', function(req, res, next){
     console.log('myPage/postscripts memSeq=', memSeq);
 
     if(!memSeq) res.json(statusFail);
-    else member.postscripts(memSeq, function(datas){ res.json(datas); }); // member.postscripts
+    else member.myPostscripts(memSeq, function(datas){ res.json(datas); }); // member.postscripts
   }); // getMemberSeq
 });   //  api/...
 
 
 // 활동내역의 나의 면접후기
 router.get('/myPage/interviews', function(req, res, next){
-  member.getMemberSeq(req, function(memSeq){
-    console.log('mypage/interviews memSeq', memSeq);
-
-    if(!memSeq) res.json(statusFail);
-    else member.interviews(memSeq, function(result){ res.json(result); }); // member.interviews 
-  }); // getMemberSeq
+  member.myInterviews(req, function(result){ res.json(result); }); // member.interviews 
 });
 
 
-router.get('/myPage/moreActivity', function(req, res, next){
-  member.getMemberSeq(req, function(memSeq){
-    console.log('/mypage/moreActivity memSeq=', memSeq);
-
-    if(!memSeq) res.json(statusFail);
-    else member.moreActivity(memSeq, function(result){ res.json(result); }); // member.moreActivity
-  }); // getMemberSeq
+router.get('/myPage/moreActivity', function(req, res, next){  
+    member.moreActivity(req, function(result){ res.json(result); }); // member.moreActivity  
 });
 
 
@@ -564,222 +517,11 @@ router.get('/testWhere', function(req, res, next){
 
 
 
-// ******************* For Process(WebPage) ******************************** //
-//  ******************* Activity ******************* //
-router.get('/web/signUpPage', function(req, res, next){
-  var obj = { "title": "회원가입 페이지" }
-  res.render('signUpPage', obj);
-});
-
-
-router.post('/web/login', function(req, res, next){
-  var loginEmail = req.body.email;
-  var pwd = req.body.pwd;
-
-  if(loginEmail == 'admin' && pwd == 'admin' ){
-    req.session.loginEmail = loginEmail;
-    res.redirect('/web/activityList');  
-  }
-}); 
-
-router.get('/web/logout', function(req, res, next){
-  console.log('1------------------------------------------------1     /index/web/logout');
-
-  req.session.destroy(function(err){
-    if(err) console.log('err', err);
-    console.log('req.session.destroy');
-    web_sessionCheck(req);
-    res.redirect('/');
-  });
-});
-
-
-router.get('/web/detailActivity/:activitySeq', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  var seq = req.params.activitySeq;
-  activity.webGetActivity(seq, function(result){ 
-    res.render('web_detailActivity', result); 
-    // res.json(result);
-  });
-});
-
-router.get('/web/writeActivity', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  res.render('web_writeActivity');
-});
-
-
-router.post('/web/insertActivity', upload.array('activityImg', 3),  function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  console.log('2------------------------------------------------2     req.body=', req.body);
-  console.log('2------------------------------------------------2     req.file=', req.files[0]);
-  // console.log('2------------------------------------------------2     req.file=', req.file);
-
-
-  // 파일이 여러개여서 req.files[], 순서대로 0~file.length
-  // 현재 req.file이 undefined인데 그 이유는, activityImg가 배열로 묶여서 file이 들어오는게 아니라 file명만 들어오고 있음.   
-  var guideFile = req.files[0];
-  var recruitFile = req.files[1];
-  var companyLogoFile = req.files[2];
-
-  var guidePath = path + guideFile.originalname;
-  var recruitPath = path + recruitFile.originalname;
-  var companyLogoPath = path + companyLogoFile.originalname;
-
-  activity.insertActivity(req, guidePath, recruitPath, companyLogoPath, function(result){ 
-    console.log('insertActivity result=', result);
-    res.redirect('/web/activityList'); 
-  });
-});
-
-router.get('/web/activityList', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  activity.activityList(function(result){ res.render('web_activityList', result); })
-});
-
-
-router.get('/web/updateActivity/:activitySeq', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  var seq = req.params.activitySeq;
-  activity.findOneActivity(seq, function(result){ res.render('web_updateActivity', result); });
-});
-
-
-router.post('/web/updateActivity', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  activity.webUpdateActivity(req, function(result){ res.redirect('/web/detailActivity/'+result); });
-});
-
-
-
-
-// ****************************** Postscript ****************************** //
-router.get('/web/formPostscript/:activitySeq', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  var activitySeq = req.params.activitySeq;
-  activity.findOneActivity(activitySeq, function(result){ res.render('web_writeFormPostscript', result); });
-});
-
-
-router.post('/web/writePostscript', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-  // res.send('<script>alert("로그인 이메일 인증완료!");</script>')      
-  postscript.insertPostscript(req, function(result){ res.redirect('/web/detailActivity/'+result); });
-});
-
-
-router.get('/web/detailPostscript/:postSeq/:activitySeq', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  var seq = req.params.postSeq;
-  var activitySeq = req.params.activitySeq;
-  postscript.webDetailPostscript(seq, activitySeq, function(result){ res.render('web_detailPostscript', result); });
-});
-
-
-router.post('/web/updatePostscript', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  postscript.updatePostscript(req, function(result){ res.redirect('/web/detailActivity/'+result); });
-});
-
-
-router.get('/web/webDeletePost/:postSeq', function(req, res, next){
-  var seq = req.params.postSeq;
-  postscript.webDeletePost(seq, function(result) { res.json(result); });
-});
-
-// ****************************** Interview ****************************** //
-router.post('/web/updateInterview', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  interview.updateInterview(req, function(result){ res.redirect('/web/detailActivity/'+result); });
-});
-
-router.get('/web/detailInterview/:interSeq/:activitySeq', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  var seq = req.params.interSeq;
-  var activitySeq = req.params.activitySeq;
-  interview.webDetailInterview(seq, activitySeq, function(result){ res.render('web_detailInterview', result); });
-});
-
-router.get('/web/formInterview/:activitySeq', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  var activitySeq = req.params.activitySeq;
-  activity.findOneActivity(activitySeq, function(result){ res.render('web_writeFormInterview', result); });
-});
-
-router.post('/web/writeInterview', function(req, res, next){
-  if(!web_sessionCheck(req)) res.redirect('/');
-
-  interview.insertInterview(req, function(result){ res.redirect('/web/detailActivity/'+result); });
-});
-
-router.get('/web/delInterview/:seq', function(req, res, next){
-  var seq = req.params.seq;
-  interview.deleteInterview(seq, function(result){ res.json(result); });
-});
-
-
-function web_sessionCheck(req){  
-  console.log('web_sessionCheck');
-  var loginEmail = req.session.loginEmail;
-  if(!loginEmail){
-    console.log('1-----------------------------------------1 not function');
-    return false;
-  }
-  else{
-    console.log('1-----------------------------------------1 exist');
-    return true;
-  } 
-}
 
 
 
 
 
-//  ******************* End Project ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  *******************             ******************* //
-//  ******************* End Project ******************* //
-
-
-
-
-
-router.get('/signUpPage', function(req, res, next){
-  var obj = { "title": "회원가입 페이지" }
-  res.render('signUpPage', obj);
-});
-
-router.get('/loginPage', function(req, res, next){
-  var obj = { "title": "로그인 페이지" }
-  res.render('loginPage', obj);
-});
-
-router.get('/changePwd', function(req, res, next){
-  var obj = { "title": "비밀번호 변경" }
-  res.render('changePwdPage', obj);
-});
 
 
 
@@ -788,13 +530,6 @@ router.get('/testGCM', function(req, res, next){
   likeActivity.pushGCM(function(result){ console.log('GCM Schedule / push GCM / '+ result); res.json(result); });
 });
 
-router.get('/createMember', function(req, res, next){
-  member.createMember(function(result){ res.json(result); });
-});
 
-router.get('/getMember/:seq', function(req, res, next){
-  seq = req.params.seq;
-  member.getMember(seq, function(result){ res.json(result); });
-});
 
 module.exports = router;

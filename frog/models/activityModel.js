@@ -191,18 +191,18 @@ exports.getActivity = function(req, division, result_callback){
 						}	// for
 
 						switch(index){
-							case 0: 	result="전체";	 break;
-							case 1: 	result="해외탐방";	 break;
-							case 2: 	result="국내봉사";	 break;
-							case 3: 	result="해외봉사";	 break;
-							case 4: 	result="강연"; 	 break;
-							case 5: 	result="멘토링";	 break;
-							case 6: 	result="서포터즈";	 break;
-							case 7: 	result="마케터"; 	 break;
-							case 8: 	result="홍보대사";	 break;
-							case 9: 	result="기자단"; 	 break;
-							case 10: 	result="기획단"; 	 break;
-							case 11: 	result="기타"; 	 break;		
+							case 0: 	result="전체";	 	break;
+							case 1: 	result="해외탐방";	break;
+							case 2: 	result="국내봉사";	break;
+							case 3: 	result="해외봉사";	break;
+							case 4: 	result="강연"; 		break;
+							case 5: 	result="멘토링";	 	break;
+							case 6: 	result="서포터즈";	break;
+							case 7: 	result="마케터"; 	 	break;
+							case 8: 	result="홍보대사";	break;
+							case 9: 	result="기자단"; 	 	break;
+							case 10: 	result="기획단"; 	 	break;
+							case 11: 	result="기타"; 	 	break;		
 						}	// switch
 
 						ActivityModel.find({'actClass': result}, function(err, activity){
@@ -371,10 +371,8 @@ exports.detailActivityPostscripts = function(activitySeq, callback){
 
 
 exports.nameList = function(result_callback){
-	console.log('activityModel NameList');
-	
-	var activityName = [];
-	var obj;
+		
+	var activityName = [];	
 	var i=0;
 
 	async.waterfall([
@@ -427,43 +425,6 @@ exports.getFormActivity = function(seq, callback){
 
 
 // ******************* Function ******************* // 
-function updateActivity(activity){
-
-	var endDate = calDate_dDay(activity.endDate);	
-	// console.log('1------------------------------------------------------------1     endDate = ', endDate);
-	if( endDate == "null" ) {
-		console.log('return null');
-		return null;
-	}else{
-		var resultActivity = new ActivityModel({
-			'seq' : activity.seq,
-			'name' : activity.name,
-			'hit': activity.hit,
-			'origin_endDate': activity.origin_endDate,
-			'endDate': endDate,
-			'origin_startDate': activity.origin_startDate,
-			'startDate': activity.startDate,
-			'averageRate' : activity.averageRate,
-			'actClass' : activity.actClass,
-			'indus' : activity.indus,
-			'term' : activity.term,
-			'during': activity.during,
-			'strDuring': activity.strDuring,
-			'region' : activity.region,
-			'totalPostCount' : activity.totalPostCount,
-			'totalPostCountStar' : activity.totalPostCountStar,
-			'totalInterCount' : activity.totalInterLevel,
-			'totalInterLevel' : activity.totalInterLevel,
-			'guideImg' : activity.guideImg,
-			'recruitImg' : activity.recruitImg,
-			'companyName' : activity.companyName,
-			'companyLogo' : activity.companyLogo		
-		});	
-	}
-	return resultActivity;
-}
-
-
 function calDate_dDay(endDate){  	
   	
 	var today = new Date();	
@@ -490,23 +451,6 @@ function calDuring(during){
   else result = "6개월~";
   return result;
 }
-
-function updateDate(date){
-	
-	var tmp = new Date(date);
-	var result = tmp.getFullYear() + "-" + (tmp.getMonth()+1) + "-" + tmp.getDate();
-	// console.log('update Date=', result);
-	return result;
-}
-
-
-function getActClass(loginEmail){
-
-
-	return activity;
-}
-
-
 
 
 
@@ -571,7 +515,6 @@ exports.activityList = function(callback){
 
 	var tmpActivity;
 	var activityArr = [];
-
 	
 	ActivityModel.find(function(err, activity){
 		if(err) callback({error:'activityModel err activityList'});					
@@ -582,7 +525,7 @@ exports.activityList = function(callback){
 			"result": tmp
 		}
 		callback(obj);
-	}).sort( {'origin_endDate':1});	
+	}).sort( {'seq':1});	
 	
 	
 }	//	activityList
@@ -618,43 +561,3 @@ exports.findOneActivity = function(seq, callback){
 		callback(obj);
 	});
 }	// findOneActivity
-
-
-exports.webUpdateActivity = function(req, callback){
-	var seq = req.body.seq;
-
-	var name = req.body.name;
-
-	var origin_endDate = req.body.origin_endDate;
-	var endDate = new Date(origin_endDate);
-	var startDate = req.body.origin_startDate;
-	var origin_startDate = new Date(startDate);
-	var actClass = req.body.actClass;
-	var indus = req.body.indus;
-	var during = req.body.during;
-	var term = req.body.term;
-	var region = req.body.region;
-	var companyName = req.body.companyName;
-
-
-	ActivityModel.findOne({'seq':seq}, function(err, activity){
-		if(err) console.log('err', err);
-
-		activity.name = name;
-		activity.endDate = endDate;
-		activity.origin_endDate = origin_endDate;
-		activity.startDate = startDate;
-		activity.origin_startDate = origin_startDate;
-		activity.actClass = actClass;
-		activity.indus = indus;
-		activity.during = during;
-		activity.term = term;
-		activity.region = region;
-		activity.companyName = companyName;
-
-		activity.save(function(err, doc){
-			if(err) console.log('activity save err', err);
-			callback(seq);
-		});
-	});
-}
